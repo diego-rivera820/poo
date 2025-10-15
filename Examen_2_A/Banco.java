@@ -2,10 +2,10 @@ package Examen_2_A;
 
 public class Banco {
 
-    //se crea el main para probar la clase Cuenta_Banco
+  //se crea el main para probar la clase cuentaBancaria
     public static void main(String[] args) {
-        Cuenta_Banco cuenta1 = new Cuenta_Banco("Juan Perez", "123456789", 1000.0);
-        Cuenta_Banco cuenta2 = new Cuenta_Banco("Maria Gomez", "987654321", 500.0);
+        cuentaBancaria cuenta1 = new cuentaBancaria("Juan Perez", "123456789", 1000.0);
+        cuentaBancaria cuenta2 = new cuentaBancaria("Maria Gomez", "987654321", 500.0);
         
         //se imprimen las cuentas
         System.out.println(cuenta1);
@@ -17,5 +17,4 @@ public class Banco {
         System.out.println(cuenta1);
         System.out.println(cuenta2);
     }
-    
 }

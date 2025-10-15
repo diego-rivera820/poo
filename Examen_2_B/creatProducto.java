@@ -105,6 +105,25 @@ public class creatProducto {
         }
     }
 
+    // aplica descuento e impuesto sobre el subtotal completo
+    public double calcularPrecioFinal(double porcentajeDescuento) {
+        if (porcentajeDescuento < 0 || porcentajeDescuento > 100) {
+            System.out.println("Porcentaje de descuento inválido. Se usará 0%.");
+            porcentajeDescuento = 0;
+        }
+
+        // Descuento aplicado al subtotal
+        double precioConDescuento = subtotal() - (subtotal() * porcentajeDescuento / 100);
+
+        // Impuesto del 8% aplicado al precio con descuento
+        double impuesto = precioConDescuento * 0.08;
+
+        // Total final con impuesto
+        double precioFinal = precioConDescuento + impuesto;
+
+        return precioFinal;
+    }
+
     // Representación en texto del objeto
     @Override
     public String toString() {

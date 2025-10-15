@@ -1,20 +1,20 @@
 package Examen_2_A;
 
-public class Cuenta_Banco {
+public class cuentaBancaria {
 
     private String titular;
     private String numeroCuenta;
     private double saldo;
 
     // Constructor vacío (valores por defecto)
-    public Cuenta_Banco() {
+    public cuentaBancaria() {
         this.titular = "Desconocido";
         this.numeroCuenta = "000000000";
         this.saldo = 0.0;
     }
 
     // Constructor con parámetros (con validaciones)
-    public Cuenta_Banco(String titular, String numeroCuenta, double saldo) {
+    public cuentaBancaria(String titular, String numeroCuenta, double saldo) {
         if (numeroCuenta == null || !numeroCuenta.matches("\\d{9}")) {
             throw new IllegalArgumentException("Número de cuenta inválido. Debe contener exactamente 9 dígitos.");
         }
@@ -90,16 +90,10 @@ public class Cuenta_Banco {
 
     @Override
     public String toString() {
-        return "Cuenta_Banco{" +
+        return "cuentaBancaria{" +
                 "titular='" + titular + '\'' +
                 ", numeroCuenta='" + numeroCuenta + '\'' +
                 ", saldo=" + saldo +
                 '}';
     }
 }
-
-
-    
-    
-
-    
