@@ -45,7 +45,7 @@ public class Elevador {
         this.random = new Random();
     }
 
-    // Métodos para operar el elevador (moverse, abrir/cerrar puertas, manejar emergencias, etc.) irían aquí
+    
     public int getPisoActual(){
         return pisoActual;
     }
@@ -132,8 +132,61 @@ public class Elevador {
             System.out.println("No hay solicitudes pendientes, el elevador permanece en el piso" + pisoActual);
 
         } else {
-            //Deci
+            //Decidimos un destino segun la lista de solicitudes 
+            BotonPiso destinoBoton = escogerDestino();
+            if (destinoBoton == null) {
+                System.out.println("No hay destino valido en la direccion actual.");
+
+            } else {
+                int destino = destinoBoton.getPiso();
+                System.out.printf("Moviendo de piso %d a %d...%n", pisoActual, destino);
+                pisoActual = destino;
+                System.out.println("Elevador ha llegado a piso" + pisoActual);
+                destinoBoton.apagarLuz();
+            }
         }
 
+        puerta.abrir();
+        direccion = Direccion.INACTIVO;
+        
 
+    }
+
+    private void procesarSolicitudes(){
+        //Si hay solicitudes para subir y estamos en una direccion adecuada
+        if (!solicitudesSubir.isEmpty()){
+            direccion = Direccion.SUBIR;
+        
+        } else if (!solicitudesBajar.isEmpty()){
+            direccion = Direccion.BAJAR;
+        
+        } else {
+            direccion = Direccion.INACTIVO;
+        }
+
+        System.out.println("Direccion decidida:" + direccion);
+    }
+
+    private BotonPiso escogerDestino(){
+        BotonPiso elegido = null;
+        if (direccion == Direccion.SUBIR){
+            int minPiso = Integer.MAX_VALUE;
+            for (BotonPiso b : solicitudesSubir){
+                if (b.getPiso() >= pisoActual && b.getPiso() < minPiso){
+                    minPiso = b.getPiso();
+                    elegido = b;
+                }
+            }
+        } else if (direccion == Direccion.BAJAR){
+            int maxPiso = Integer.MIN_VALUE;
+            for (BotonPiso b : solicitudesBajar){
+                if (b.getpiso() <= pisoActual && b.getPiso() > maxPiso){
+                    maxPiso = b.getPiso();
+                    elegido = b;
+                }
+            }
+            solicitudesBajar.remove(elegido);
+        }
+        return elegido;
+    }
 }
