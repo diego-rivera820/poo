@@ -55,7 +55,7 @@ public class Elevador {
     }
 
     public boolean emergenciaActiva(){
-        return emergencia.isActiva();
+        return emergencia.isActivada();
     }
 
     public void presionarBotonCabina(int piso){
@@ -82,7 +82,7 @@ public class Elevador {
         } else {
             solicitudesBajar.add(boton);
         }
-        System.out.println("Solicitud de piso" + boton.getPiso() + " para " + boton.getDireccion());
+        System.out.println("Solicitud de piso" + boton.getpiso() + " para " + boton.getDireccion());
  
     } 
     
@@ -138,7 +138,7 @@ public class Elevador {
                 System.out.println("No hay destino valido en la direccion actual.");
 
             } else {
-                int destino = destinoBoton.getPiso();
+                int destino = destinoBoton.getpiso();
                 System.out.printf("Moviendo de piso %d a %d...%n", pisoActual, destino);
                 pisoActual = destino;
                 System.out.println("Elevador ha llegado a piso" + pisoActual);
@@ -172,16 +172,16 @@ public class Elevador {
         if (direccion == Direccion.SUBIR){
             int minPiso = Integer.MAX_VALUE;
             for (BotonPiso b : solicitudesSubir){
-                if (b.getPiso() >= pisoActual && b.getPiso() < minPiso){
-                    minPiso = b.getPiso();
+                if (b.getpiso() >= pisoActual && b.getpiso() < minPiso){
+                    minPiso = b.getpiso();
                     elegido = b;
                 }
             }
         } else if (direccion == Direccion.BAJAR){
             int maxPiso = Integer.MIN_VALUE;
             for (BotonPiso b : solicitudesBajar){
-                if (b.getpiso() <= pisoActual && b.getPiso() > maxPiso){
-                    maxPiso = b.getPiso();
+                if (b.getpiso() <= pisoActual && b.getpiso() > maxPiso){
+                    maxPiso = b.getpiso();
                     elegido = b;
                 }
             }

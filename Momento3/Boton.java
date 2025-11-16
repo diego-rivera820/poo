@@ -1,13 +1,12 @@
 package Momento3;
 
-public class Boton {
 
-    public abstract class tBoton {
+    public abstract class Boton {
         private int piso;
         private boolean iluminado;
         private boolean falla;
 
-        public tBoton(int piso) {
+        public Boton(int piso) {
             this.piso = piso;
             this.iluminado = false;
             this.falla = false;
@@ -55,4 +54,4 @@ public class Boton {
 
     }
     
-}
+

@@ -5,7 +5,7 @@ public class Piso {
     private BotonPiso botonSubir;
     private BotonPiso botonBajar;
 
-    public Piso(int numero, maxPisos){
+    public Piso(int numero, int maxPisos){
         this.numero = numero;
         if (numero < maxPisos){
             botonSubir = new BotonPiso(numero, Direccion.SUBIR);

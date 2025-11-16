@@ -1,12 +1,8 @@
 package Momento3;
 
-    public class Direccion {
+public enum Direccion {
+    SUBIR,
+    BAJAR,
+    INACTIVO
 
-    public enum tDireccion {
-        SUBIR,
-        BAJAR,
-        INACTIVO
-        
-    }
-    
 }
