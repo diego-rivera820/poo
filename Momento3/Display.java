@@ -12,7 +12,7 @@ public class Display {
         Elevador e = sistema.getElevador(); 
         System.out.println("\n--- Estado del Elevador ---");
         System.out.println("Piso actual:" + e.getPisoActual()); 
-        System.out.printf("Peso actual: %.2f kg / Máximo: %.2f kg%n", e.getPesoActual(), e.pesoMaximo);
+        System.out.printf("Peso actual: %.2f kg / Máximo: %.2f kg%n", e.getPesoActual(), e.getPesoMaximo());
         System.out.println("Emergencia activada: " + e.emergenciaActiva());
         System.out.println("-----------------------------"); 
     }

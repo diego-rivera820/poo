@@ -45,6 +45,9 @@ public class Elevador {
         this.random = new Random();
     }
 
+    public double getPesoMaximo(){
+        return pesoMaximo;
+    }
     
     public int getPisoActual(){
         return pisoActual;
