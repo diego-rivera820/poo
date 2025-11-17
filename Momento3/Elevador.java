@@ -132,6 +132,9 @@ public class Elevador {
         if (direccion == Direccion.INACTIVO) {
             System.out.println("No hay solicitudes pendientes, el elevador permanece en el piso " + pisoActual);
         } else {
+            System.out.println("DEBUG: solicitudesSubir = " + solicitudesSubir);
+            System.out.println("DEBUG: solicitudesBajar = " + solicitudesBajar);
+
             BotonPiso destinoBoton = escogerDestino();
             System.out.println("DEBUG: Botón destino escogido = " + destinoBoton);
             if (destinoBoton == null) {
