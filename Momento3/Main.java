@@ -81,7 +81,7 @@ public class Main {
                     elevador.resetearEmergencia();
                     break;
                 case 8:
-                    System.out.println("¿Objeto ostructor? (s/n): ");
+                    System.out.println("¿Objeto ostructor? (true/false): ");
                     boolean tiene = scanner.nextBoolean();
                     double anchoO = 0, altoO = 0;
                     if (tiene) {

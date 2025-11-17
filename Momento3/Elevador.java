@@ -21,7 +21,6 @@ public class Elevador {
     private Random random; // para simular fallas
 
     public Elevador(double pesoMaximo, double anchoInterior, double altoInterior, double largoInterior) {
-
         this.pesoMaximo = pesoMaximo;
         this.anchoInterior = anchoInterior;
         this.altoInterior = altoInterior;
@@ -34,7 +33,7 @@ public class Elevador {
         this.puerta = new Puerta();
         this.emergencia = new Emergencia();
 
-        this.botonesCabina = new BotonCabina[5]; // Suponiendo un edificio de 5 pisos
+        this.botonesCabina = new BotonCabina[5];
         for (int i = 0; i < 5; i++) {
             this.botonesCabina[i] = new BotonCabina(i + 1);
         }
@@ -63,40 +62,35 @@ public class Elevador {
 
     public void presionarBotonCabina(int piso) {
         BotonCabina boton = botonesCabina[piso - 1];
-        // simulamos que el boton puede fallar aleatoriamente
-        if (random.nextDouble() < 0.1) { // 10% de probabilidad de falla
+        if (random.nextDouble() < 0.1) {
             boton.fallar();
         }
-
         boton.presionar();
-        solicitudesSubir.add(new BotonPiso(piso, Direccion.SUBIR)); // Lo agregue como solicitud
-        System.out.println("Solicitud de de cabina registrada para ir al piso" + piso);
+        solicitudesSubir.add(new BotonPiso(piso, Direccion.SUBIR));
+        System.out.println("Solicitud de cabina registrada para ir al piso " + piso);
     }
 
     public void solicitarDesdePiso(BotonPiso boton) {
-        if (random.nextDouble() < 0.05) { // 5% de probabilidad de falla
+        if (random.nextDouble() < 0.05) {
             boton.fallar();
         }
-
         boton.presionar();
         if (boton.getDireccion() == Direccion.SUBIR) {
             solicitudesSubir.add(boton);
-
         } else {
             solicitudesBajar.add(boton);
         }
-        System.out.println("Solicitud de piso" + boton.getpiso() + " para " + boton.getDireccion());
-
+        System.out.println("Solicitud en piso " + boton.getpiso() + " para " + boton.getDireccion());
     }
 
     public void subirPeso(double peso) {
         pesoActual += peso;
-        System.out.printf("Se ha subido %, .2f kg. Peso total: %,.2f kg.%n", peso, pesoActual);
+        System.out.printf("Se ha subido %.2f kg. Peso total: %.2f kg.%n", peso, pesoActual);
     }
 
     public void bajarPeso(double peso) {
         pesoActual = Math.max(0, pesoActual - peso);
-        System.out.printf("Se ha bajado %, .2f kg. Peso total: %,.2f kg.%n", peso, pesoActual);
+        System.out.printf("Se ha bajado %.2f kg. Peso total: %.2f kg.%n", peso, pesoActual);
     }
 
     public void activarEmergencia() {
@@ -113,82 +107,91 @@ public class Elevador {
     }
 
     public void mover(double anchoObs, double altoObs, double anchoMaxObs, double altoMaxObs) {
-    if (emergencia.isActivada()) {
-        System.out.println("No se puede mover: la emergencia está activa.");
-        return;
-    }
-
-    if (pesoActual >= pesoMaximo) {
-        System.out.printf("Peso al límite (%.2f kg) o excedido (max = %.2f kg) - movimiento denegado.%n", pesoActual, pesoMaximo);
-        return;
-    }
-
-    System.out.println("DEBUG: Intentando cerrar puertas...");
-    boolean cerrado = puerta.cerrar(anchoObs, altoObs, anchoMaxObs, altoMaxObs);
-    System.out.println("DEBUG: Resultado de cerrar = " + cerrado);
-    if (!cerrado) {
-        return;
-    }
-
-    System.out.println("DEBUG: Calculando dirección según solicitudes...");
-    procesarSolicitudes();
-    System.out.println("DEBUG: Dirección después de procesar solicitudes = " + direccion);
-
-    if (direccion == Direccion.INACTIVO) {
-        System.out.println("No hay solicitudes pendientes, el elevador permanece en el piso " + pisoActual);
-    } else {
-        BotonPiso destinoBoton = escogerDestino();
-        System.out.println("DEBUG: Botón destino escogido = " + destinoBoton);
-        if (destinoBoton == null) {
-            System.out.println("No hay destino válido en la dirección actual.");
-        } else {
-            int destino = destinoBoton.getpiso();
-            System.out.printf("Moviendo del piso %d al piso %d...%n", pisoActual, destino);
-            pisoActual = destino;
-            System.out.println("DEBUG: pisoActual cambiado a " + pisoActual);
-            destinoBoton.apagarLuz();
+        if (emergencia.isActivada()) {
+            System.out.println("No se puede mover: la emergencia está activa.");
+            return;
         }
+
+        if (pesoActual >= pesoMaximo) {
+            System.out.printf("Peso al límite (%.2f kg) o excedido (máx = %.2f kg) - movimiento denegado.%n",
+                    pesoActual, pesoMaximo);
+            return;
+        }
+
+        System.out.println("DEBUG: Intentando cerrar puertas...");
+        boolean cerrado = puerta.cerrar(anchoObs, altoObs, anchoMaxObs, altoMaxObs);
+        System.out.println("DEBUG: Resultado de cerrar = " + cerrado);
+        if (!cerrado) {
+            return;
+        }
+
+        System.out.println("DEBUG: Calculando dirección según solicitudes...");
+        procesarSolicitudes();
+        System.out.println("DEBUG: Dirección después de procesar solicitudes = " + direccion);
+
+        if (direccion == Direccion.INACTIVO) {
+            System.out.println("No hay solicitudes pendientes, el elevador permanece en el piso " + pisoActual);
+        } else {
+            BotonPiso destinoBoton = escogerDestino();
+            System.out.println("DEBUG: Botón destino escogido = " + destinoBoton);
+            if (destinoBoton == null) {
+                System.out.println("No hay destino válido en la dirección actual.");
+            } else {
+                int destino = destinoBoton.getpiso();
+                if (destino == pisoActual) {
+                    System.out.println("Destino igual al piso actual. No se realiza movimiento.");
+                } else {
+                    System.out.printf("Moviendo del piso %d al piso %d...%n", pisoActual, destino);
+                    pisoActual = destino;
+                    System.out.println("DEBUG: pisoActual cambiado a " + pisoActual);
+                    destinoBoton.apagarLuz();
+                }
+            }
+        }
+
+        System.out.println("DEBUG: Abriendo puertas...");
+        puerta.abrir();
+        direccion = Direccion.INACTIVO;
+        System.out.println("DEBUG: Dirección restablecida a INACTIVO.");
     }
 
-    System.out.println("DEBUG: Abriendo puertas...");
-    puerta.abrir();
-    direccion = Direccion.INACTIVO;
-    System.out.println("DEBUG: Dirección restablecida a INACTIVO.");
-}
     private void procesarSolicitudes() {
-        // Si hay solicitudes para subir y estamos en una direccion adecuada
         if (!solicitudesSubir.isEmpty()) {
             direccion = Direccion.SUBIR;
-
         } else if (!solicitudesBajar.isEmpty()) {
             direccion = Direccion.BAJAR;
-
         } else {
             direccion = Direccion.INACTIVO;
         }
-
-        System.out.println("Direccion decidida:" + direccion);
+        System.out.println("DEBUG: Dirección decidida = " + direccion);
     }
 
     private BotonPiso escogerDestino() {
         BotonPiso elegido = null;
         if (direccion == Direccion.SUBIR) {
-            int minPiso = Integer.MAX_VALUE;
+            int minPisoMayor = Integer.MAX_VALUE;
             for (BotonPiso b : solicitudesSubir) {
-                if (b.getpiso() >= pisoActual && b.getpiso() < minPiso) {
-                    minPiso = b.getpiso();
+                int p = b.getpiso();
+                if (p > pisoActual && p < minPisoMayor) {
+                    minPisoMayor = p;
                     elegido = b;
                 }
+            }
+            if (elegido != null) {
+                solicitudesSubir.remove(elegido);
             }
         } else if (direccion == Direccion.BAJAR) {
-            int maxPiso = Integer.MIN_VALUE;
+            int maxPisoMenor = Integer.MIN_VALUE;
             for (BotonPiso b : solicitudesBajar) {
-                if (b.getpiso() <= pisoActual && b.getpiso() > maxPiso) {
-                    maxPiso = b.getpiso();
+                int p = b.getpiso();
+                if (p < pisoActual && p > maxPisoMenor) {
+                    maxPisoMenor = p;
                     elegido = b;
                 }
             }
-            solicitudesBajar.remove(elegido);
+            if (elegido != null) {
+                solicitudesBajar.remove(elegido);
+            }
         }
         return elegido;
     }
