@@ -1,14 +1,18 @@
 package Momento3;
 
+// implementacion de scanner para interaccion con el usuario
 import java.util.Scanner;
 
+// implementacion de la clase Main
 public class Main {
 
+    // metodo main
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String edificio = "Torre centinela";
         Display.bienvenida(edificio);
 
+        // crear elevador y sistema de control
         Elevador elevador = new Elevador(
                 500.0, // peso maximo
                 3.0, // ancho interior
@@ -17,6 +21,7 @@ public class Main {
 
         );
 
+        // crear sistema de control
         SistemaControl sistema = new SistemaControl(5, elevador);
 
         double anchoMaxObs = 3.0;
@@ -24,6 +29,8 @@ public class Main {
 
         boolean salir = false;
         while (!salir) {
+
+            // mostrar estado del elevador y las opciones disponibles
             Display.mostrarEstado(sistema);
             System.out.println("Opciones:");
             System.out.println("1) Añadir peso");
@@ -37,6 +44,7 @@ public class Main {
             System.out.println("0) Salir");
             System.out.print("Seleccione una opcion: ");
 
+            // leer opcion del usuario mediante scanner
             int opcion = scanner.nextInt();
             switch (opcion) {
                 case 1:
@@ -81,6 +89,7 @@ public class Main {
                     elevador.resetearEmergencia();
                     break;
                 case 8:
+                    // mover elevador considerando posibles objetos obstructores
                     System.out.println("¿Objeto ostructor? (true/false): ");
                     boolean tiene = scanner.nextBoolean();
                     double anchoO = 0, altoO = 0;
@@ -91,7 +100,7 @@ public class Main {
                         altoO = scanner.nextDouble();
 
                     }
-
+                    // mover elevador con objeto o sin objeto
                     elevador.mover(anchoO, altoO, anchoMaxObs, altoMaxObs);
                     break;
                 case 0:
